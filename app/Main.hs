@@ -56,7 +56,7 @@ testApp = BugsnagApp (Just "1.0") (Just "development") Nothing
 testDevice :: BugsnagDevice
 testDevice = BugsnagDevice (Just "1.0") (Just "web.io.com")
 
-testRequest :: Text -> BugsnagRequest
+testRequest :: BugsnagApiKey -> BugsnagRequest
 testRequest key = BugsnagRequest key [testEvent]
 
 data MyException = MyException
@@ -84,7 +84,7 @@ main = do
   undefined `catch` \(e :: SomeException) -> do
     print $(qLocation >>= liftLoc)
   key <- appKey
-  req <- bugsnagHttpRequest (testRequest key)
+  req <- bugsnagHttpRequest (testRequest (BugsnagApiKey key))
   mgr <- newManager tlsManagerSettings
   resp <- httpLbs req mgr
   print resp

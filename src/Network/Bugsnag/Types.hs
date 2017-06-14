@@ -1,11 +1,13 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE GADTs #-}
 
 module Network.Bugsnag.Types where
 
-import Data.Text
 import Data.Aeson
+import Data.Text
+import GHC.Generics
 
 data BugsnagEvent = BugsnagEvent
   { bugsnagExceptions :: [BugsnagException]
@@ -116,8 +118,14 @@ instance ToJSON BugsnagDevice where
     , "hostname" .= bugsnagHostname
     ]
 
+newtype BugsnagApiKey =
+  BugsnagApiKey { unBugsnagApiKey :: Text }
+  deriving (Show, Eq, Generic)
+
+instance ToJSON BugsnagApiKey
+
 data BugsnagRequest = BugsnagRequest
-  { bugsnagApiKey :: Text 
+  { bugsnagApiKey :: BugsnagApiKey
   , bugsnagEvents :: [BugsnagEvent]
   } deriving (Show, Eq)
 
