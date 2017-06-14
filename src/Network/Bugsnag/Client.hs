@@ -23,27 +23,3 @@ bugsnagHttpRequest bugsnagReq = do
   let reqBody = BL.toStrict (encode bugsnagReq)
   return $ initReq { method = "POST"
                    , requestBody = RequestBodyBS reqBody }
-
--- [header "Content-Type" "application/json"]
--- dispatch appKey mgr = do
---   initReq <- liftIO $ parseUrl' bugSnagNotify
-  -- let reqBody = RequestBodyLBS $ fromMaybe emptyBody body
-  --   req <- liftIO $ reqHook $ setRequestIgnoreStatus $ initReq { method = dMethod
-  --                                                              , requestBody = reqBody }
-  --   liftIO $ httpLbs req mgr
-
--- (Just (BL.toStrict (encode $ testRequest key)))
-
--- dispatch :: MonadBH m
---          => Method
---          -> Text
---          -> Maybe L.ByteString
---          -> m Reply
--- dispatch dMethod url body = do
---   initReq <- liftIO $ parseUrl' url
---   reqHook <- bhRequestHook A.<$> getBHEnv
---   let reqBody = RequestBodyLBS $ fromMaybe emptyBody body
---   req <- liftIO $ reqHook $ setRequestIgnoreStatus $ initReq { method = dMethod
---                                                              , requestBody = reqBody }
---   mgr <- bhManager <$> getBHEnv
---   liftIO $ httpLbs req mgr
