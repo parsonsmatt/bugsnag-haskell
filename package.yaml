@@ -11,19 +11,31 @@ category:            Web
 
 dependencies:
   - base >= 4.7 && < 5
-  - http-dispatch
   - aeson
-  - text
   - bytestring
+  - http-client
+  - http-client-tls
+  - http-types
+  - network-uri
   - template-haskell
+  - text
+
+default-extensions:
+  - OverloadedStrings
+  - QuasiQuotes
+  - TemplateHaskell
 
 library:
-  source-dirs: lib
+  source-dirs: src
   exposed-modules:
-    - Network.Bugsnag.Types 
+    - Network.Bugsnag
+    - Network.Bugsnag.Client
+    - Network.Bugsnag.TH
+    - Network.Bugsnag.Types
 
 executables:
   bugsnag-haskell:
-    source-dirs:      src
+    source-dirs:      app
     main:             Main.hs
-    dependencies: bugsnag-haskell
+    dependencies:
+      - bugsnag-haskell
