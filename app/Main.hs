@@ -46,7 +46,8 @@ testStackFrame :: BugsnagStackFrame
 testStackFrame = BugsnagStackFrame "Main.hs" "myReq" 88 (Just 0) True mempty
 
 testException :: BugsnagException
-testException = BugsnagException "errorClass" "There was an error!" [testStackFrame]
+testException =
+  BugsnagException "errorClass" "There was an error!" (testStackFrame :| [])
 
 testUser :: BugsnagUser
 testUser = BugsnagUser (Just "10") (Just "Ben") (Just "ben@ben.com")

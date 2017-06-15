@@ -11,15 +11,15 @@ import           Data.Text
 import           GHC.Generics
 
 data BugsnagEvent = BugsnagEvent
-  { bugsnagExceptions :: [BugsnagException]
-  , bugsnagThreads :: Maybe [BugsnagThread]
-  , bugsnagContext :: Maybe Text
-  , bugsnagGroupingHash :: Maybe Text
-  , bugsnagSeverity :: Maybe Text
-  , bugsnagUser :: BugsnagUser
-  , bugsnagApp :: BugsnagApp
-  , bugsnagDevice :: BugsnagDevice
-  , bugsnagMetaData :: Maybe Value
+  { bugsnagExceptions :: ![BugsnagException]
+  , bugsnagThreads :: !(Maybe [BugsnagThread])
+  , bugsnagContext :: !(Maybe Text)
+  , bugsnagGroupingHash :: !(Maybe Text)
+  , bugsnagSeverity :: !(Maybe Text)
+  , bugsnagUser :: !BugsnagUser
+  , bugsnagApp :: !BugsnagApp
+  , bugsnagDevice :: !BugsnagDevice
+  , bugsnagMetaData :: !(Maybe Value)
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagEvent where
@@ -37,11 +37,11 @@ instance ToJSON BugsnagEvent where
     ]
 
 data BugsnagThread = BugsnagThread
-  { bugsnagThreadId :: Text
-  , bugsnagThreadName :: Text
+  { bugsnagThreadId :: !Text
+  , bugsnagThreadName :: !Text
     -- Stackframes cannot be an empty list or Bugsnag
     -- will throw an error
-  , bugsnagThreadStackTrace :: NonEmpty BugsnagStackFrame
+  , bugsnagThreadStackTrace :: !(NonEmpty BugsnagStackFrame)
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagThread where
@@ -52,12 +52,12 @@ instance ToJSON BugsnagThread where
     ]
 
 data BugsnagStackFrame = BugsnagStackFrame
-  { stackFrameFile :: Text
-  , stackFrameMethod :: Text
-  , stackFrameLineNumber :: Int
-  , stackFrameColumnNumber :: Maybe Int
-  , stackFrameInProject :: Bool
-  , stackFrameCode :: Object
+  { stackFrameFile :: !Text
+  , stackFrameMethod :: !Text
+  , stackFrameLineNumber :: !Int
+  , stackFrameColumnNumber :: !(Maybe Int)
+  , stackFrameInProject :: !Bool
+  , stackFrameCode :: !Object
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagStackFrame where
@@ -71,9 +71,10 @@ instance ToJSON BugsnagStackFrame where
     ]
 
 data BugsnagException = BugsnagException
-  { exceptionErrorClass :: Text
-  , exceptionMessage :: Text
-  , exceptionStacktrace :: [BugsnagStackFrame]
+  { exceptionErrorClass :: !Text
+  , exceptionMessage :: !Text
+    -- Bugsnag throws an error if this is empty
+  , exceptionStacktrace :: !(NonEmpty BugsnagStackFrame)
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagException where
@@ -85,9 +86,9 @@ instance ToJSON BugsnagException where
 
 
 data BugsnagUser = BugsnagUser
-  { bugsnagUserId :: Maybe Text
-  , bugsnagUserName :: Maybe Text
-  , bugsnagUserEmail :: Maybe Text
+  { bugsnagUserId :: !(Maybe Text)
+  , bugsnagUserName :: !(Maybe Text)
+  , bugsnagUserEmail :: !(Maybe Text)
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagUser where
@@ -98,9 +99,9 @@ instance ToJSON BugsnagUser where
     ]
 
 data BugsnagApp  = BugsnagApp
-  { bugsnagAppVersion :: Maybe Text
-  , bugsnagReleaseStage :: Maybe Text
-  , bugsnagAppType :: Maybe Text
+  { bugsnagAppVersion :: !(Maybe Text)
+  , bugsnagReleaseStage :: !(Maybe Text)
+  , bugsnagAppType :: !(Maybe Text)
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagApp where
@@ -111,8 +112,8 @@ instance ToJSON BugsnagApp where
     ]
 
 data BugsnagDevice = BugsnagDevice
-  { bugsnagOsVersion :: Maybe Text
-  , bugsnagHostname :: Maybe Text
+  { bugsnagOsVersion :: !(Maybe Text)
+  , bugsnagHostname :: !(Maybe Text)
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagDevice where
@@ -128,8 +129,8 @@ newtype BugsnagApiKey =
 instance ToJSON BugsnagApiKey
 
 data BugsnagRequest = BugsnagRequest
-  { bugsnagApiKey :: BugsnagApiKey
-  , bugsnagEvents :: [BugsnagEvent]
+  { bugsnagApiKey :: !BugsnagApiKey
+  , bugsnagEvents :: ![BugsnagEvent]
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagRequest where
