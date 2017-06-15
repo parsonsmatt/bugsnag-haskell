@@ -1,6 +1,6 @@
 name:                bugsnag-haskell
 version:             0.1.0.0
-synopsis:            Simple project template from stack
+synopsis:            Core types, JSON instances for the Bugsnag Error reporting API
 description:         Please see README.md
 homepage:            https://github.com/5outh/bugsnag-haskell#readme
 license:             BSD3
