@@ -1,24 +1,24 @@
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE GADTs             #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE GADTs #-}
+{-# LANGUAGE RecordWildCards   #-}
 
 module Network.Bugsnag.Types where
 
-import Data.Aeson
-import Data.Text
-import GHC.Generics
+import           Data.Aeson
+import           Data.Text
+import           GHC.Generics
 
 data BugsnagEvent = BugsnagEvent
   { bugsnagExceptions :: [BugsnagException]
   , bugsnagThreads :: Maybe [BugsnagThread]
-  , bugsnagContext :: Maybe Text 
+  , bugsnagContext :: Maybe Text
   , bugsnagGroupingHash :: Maybe Text
   , bugsnagSeverity :: Maybe Text
-  , bugsnagUser :: BugsnagUser 
-  , bugsnagApp :: BugsnagApp 
+  , bugsnagUser :: BugsnagUser
+  , bugsnagApp :: BugsnagApp
   , bugsnagDevice :: BugsnagDevice
-  , bugsnagMetaData :: Maybe Value 
+  , bugsnagMetaData :: Maybe Value
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagEvent where
@@ -27,12 +27,12 @@ instance ToJSON BugsnagEvent where
     , "exceptions" .= bugsnagExceptions
     , "threads" .= bugsnagThreads
     , "context" .= bugsnagContext
-    , "groupingHash" .= bugsnagGroupingHash 
-    , "severity" .= bugsnagSeverity 
-    , "user" .= bugsnagUser 
-    , "app" .= bugsnagApp 
-    , "device" .= bugsnagDevice 
-    , "metaData" .= bugsnagMetaData 
+    , "groupingHash" .= bugsnagGroupingHash
+    , "severity" .= bugsnagSeverity
+    , "user" .= bugsnagUser
+    , "app" .= bugsnagApp
+    , "device" .= bugsnagDevice
+    , "metaData" .= bugsnagMetaData
     ]
 
 data BugsnagThread = BugsnagThread
@@ -132,7 +132,7 @@ data BugsnagRequest = BugsnagRequest
 instance ToJSON BugsnagRequest where
   toJSON BugsnagRequest{..} =
     object
-      [ "apiKey" .= bugsnagApiKey
+      [ "apiKey" .= unBugsnagApiKey bugsnagApiKey
       , "notifier" .= object
         [ "name" .= String "Haskell Notifier"
         , "version" .= String "1.0.1.1"

@@ -1,16 +1,16 @@
 module Network.Bugsnag.Client where
 
-import Control.Exception
-import Network.Bugsnag.TH
-import Network.Bugsnag.Types
-import System.Environment
+import           Control.Exception
+import           Network.Bugsnag.TH
+import           Network.Bugsnag.Types
+import           System.Environment
 -- import Network.HTTP.Dispatch.Core
 -- import Network.HTTP.Dispatch.Types
-import Data.ByteString.Lazy as BL
-import Data.Text
-import qualified Data.Text as T
-import Data.Aeson
-import Language.Haskell.TH.Syntax
+import           Data.Aeson
+import           Data.ByteString.Lazy       as BL
+import           Data.Text
+import qualified Data.Text                  as T
+import           Language.Haskell.TH.Syntax
 -- import           Network.HTTP.Client.TLS
 import           Network.HTTP.Client
 
@@ -22,4 +22,6 @@ bugsnagHttpRequest bugsnagReq = do
   initReq <- parseRequest bugsnagNotifyUri
   let reqBody = BL.toStrict (encode bugsnagReq)
   return $ initReq { method = "POST"
-                   , requestBody = RequestBodyBS reqBody }
+                   , requestBody = RequestBodyBS reqBody
+                   , requestHeaders = [("Content-Type", "application/json")]
+                   }
