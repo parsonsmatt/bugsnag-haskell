@@ -6,6 +6,7 @@
 module Network.Bugsnag.Types where
 
 import           Data.Aeson
+import           Data.List.NonEmpty
 import           Data.Text
 import           GHC.Generics
 
@@ -38,7 +39,9 @@ instance ToJSON BugsnagEvent where
 data BugsnagThread = BugsnagThread
   { bugsnagThreadId :: Text
   , bugsnagThreadName :: Text
-  , bugsnagThreadStackTrace :: [BugsnagStackFrame]
+    -- Stackframes cannot be an empty list or Bugsnag
+    -- will throw an error
+  , bugsnagThreadStackTrace :: NonEmpty BugsnagStackFrame
   } deriving (Show, Eq)
 
 instance ToJSON BugsnagThread where

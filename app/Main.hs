@@ -10,6 +10,7 @@ import           Network.Bugsnag
 import           System.Environment
 import           Data.Aeson
 import           Data.ByteString.Lazy       as BL
+import           Data.List.NonEmpty
 import           Data.Text
 import qualified Data.Text                  as T
 import           Language.Haskell.TH.Syntax
@@ -39,7 +40,7 @@ testThread :: BugsnagThread
 testThread = BugsnagThread
   "2"
   "Main"
-  []
+  (testStackFrame :| [])
 
 testStackFrame :: BugsnagStackFrame
 testStackFrame = BugsnagStackFrame "Main.hs" "myReq" 88 (Just 0) True mempty
